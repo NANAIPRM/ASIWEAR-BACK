@@ -5,3 +5,8 @@ exports.checkEmailExist = async (email) => {
 };
 
 exports.createUser = (user) => userRepository.createUser(user);
+
+exports.getUserByEmail = async (email) => {
+  const user = await userRepository.getUserByEmail(email);
+  return user;
+};
