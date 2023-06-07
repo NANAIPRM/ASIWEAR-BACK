@@ -51,18 +51,22 @@ exports.login = async (req, res, next) => {
     const value = validateLogin(req.body);
     const user = await userService.getUserByEmail(value.email);
     if (!user) {
-      createError("Invalid credential", 400);
+      createError("Please register !!!", 400);
     }
     const isCorrect = await bcryptService.compare(
       value.password,
       user.password
     );
     if (!isCorrect) {
-      createError("Invalid credential", 400);
+      createError("Wrong passwod !!!", 400);
     }
     const accessToken = tokenService.sign({ id: user.id });
     res.status(200).json({ accessToken });
   } catch (err) {
     next(err);
   }
+};
+
+exports.getMe = (req, res, next) => {
+  res.status(200).json({ user: req.user });
 };

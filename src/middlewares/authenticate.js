@@ -4,13 +4,13 @@ const userService = require("../services/user-service");
 
 module.exports = async (req, res, next) => {
   try {
-    //Bearer zzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
     const authorization = req.headers.authorization;
+    console.log(authorization);
     if (!authorization || !authorization.startsWith("Bearer ")) {
       createError("unauthorized", 401);
     }
 
-    const token = req.headers.authorization.split(" ")[1];
+    const token = authorization.split(" ")[1];
     if (!token) {
       createError("unauthorized", 401);
     }
@@ -23,7 +23,7 @@ module.exports = async (req, res, next) => {
 
     req.user = user;
     next();
-  } catch (error) {
-    next(error);
+  } catch (err) {
+    next(err);
   }
 };

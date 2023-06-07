@@ -5,7 +5,6 @@ module.exports = (sequelize, DataTypes) => {
       size: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
       },
       stock: {
         type: DataTypes.INTEGER,

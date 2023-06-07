@@ -8,3 +8,5 @@ exports.getUserByEmail = (email) =>
   });
 
 exports.createUser = (user) => User.create(user);
+
+exports.getUserById = (id) => User.findByPk(id);

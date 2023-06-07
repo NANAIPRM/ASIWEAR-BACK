@@ -10,3 +10,5 @@ exports.getUserByEmail = async (email) => {
   const user = await userRepository.getUserByEmail(email);
   return user;
 };
+
+exports.getUserById = (id) => userRepository.getUserById(id);
