@@ -17,13 +17,13 @@ if (process.env.NODE_ENV === "develop") {
   app.use(morgan("combined"));
 }
 
-app.use(
-  rateLimit({
-    windowMs: 1000 * 60 * 15,
-    max: 1000,
-    message: { message: "too many request" },
-  })
-);
+// app.use(
+//   rateLimit({
+//     windowMs: 1000 * 60 * 15,
+//     max: 1000,
+//     message: { message: "too many request" },
+//   })
+// );
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
