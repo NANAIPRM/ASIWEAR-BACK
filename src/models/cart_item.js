@@ -1,9 +1,14 @@
 module.exports = (sequelize, DataTypes) => {
-  const Cart = sequelize.define(
-    "Cart",
+  const CartItem = sequelize.define(
+    "CartItem",
     {
       quantity: {
         type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 1,
+      },
+      size: {
+        type: DataTypes.ENUM("S", "M", "L"),
         allowNull: false,
       },
     },
@@ -12,23 +17,23 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  Cart.associate = (models) => {
-    Cart.belongsTo(models.User, {
-      foreignKey: {
-        name: "userId",
-        allowNull: false,
-      },
-      onDelete: "RESTRICT",
-    });
-
-    Cart.belongsTo(models.Product, {
+  CartItem.associate = (models) => {
+    CartItem.belongsTo(models.Product, {
       foreignKey: {
         name: "productId",
         allowNull: false,
       },
       onDelete: "RESTRICT",
     });
+
+    CartItem.belongsTo(models.User, {
+      foreignKey: {
+        name: "userId",
+        allowNull: false,
+      },
+      onDelete: "RESTRICT",
+    });
   };
 
-  return Cart;
+  return CartItem;
 };

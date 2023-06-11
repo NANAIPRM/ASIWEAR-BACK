@@ -38,17 +38,17 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: "RESTRICT",
     });
 
-    Order.belongsTo(models.ShippingMethod, {
+    Order.hasOne(models.ShippingMethod, {
       foreignKey: {
-        name: "shippingMethodId",
+        name: "orderId",
         allowNull: false,
       },
       onDelete: "RESTRICT",
     });
 
-    Order.belongsTo(models.Payment, {
+    Order.hasOne(models.Payment, {
       foreignKey: {
-        name: "paymentId",
+        name: "orderId",
         allowNull: false,
       },
       onDelete: "RESTRICT",

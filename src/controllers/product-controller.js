@@ -1,17 +1,26 @@
 const productService = require("../services/product-service");
 const uploadService = require("../services/upload-service");
 const createError = require("../utils/create-error");
-const { Product, Size } = require("../models");
+const { Product } = require("../models");
 
 exports.addProduct = async (req, res, next) => {
   try {
-    const { productName, price, discountPrice, description, size, stock } =
-      req.body;
+    const {
+      productName,
+      price,
+      discountPrice,
+      description,
+      sizeS,
+      sizeM,
+      sizeL,
+      gender,
+    } = req.body;
 
     const imgUrl1 = await (
       await uploadService.upload(req.files["img1"][0].path)
     ).secure_url;
 
+    console.log(imgUrl1);
     const imgUrl2 = await (
       await uploadService.upload(req.files["img2"][0].path)
     ).secure_url;
@@ -20,23 +29,21 @@ exports.addProduct = async (req, res, next) => {
       await uploadService.upload(req.files["img3"][0].path)
     ).secure_url;
 
-    const createdSize = await productService.createSize({
-      size,
-      stock,
-    });
-
     const createdProduct = await productService.createProduct({
-      name: productName,
+      productName: productName,
       price: price,
       discountPrice: discountPrice,
       description: description,
-      imgUrl1: imgUrl1,
-      imgUrl2: imgUrl2,
-      imgUrl3: imgUrl3,
-      sizeId: createdSize.id,
+      img1: imgUrl1,
+      img2: imgUrl2,
+      img3: imgUrl3,
+      sizeS: sizeS,
+      sizeM: sizeM,
+      sizeL: sizeL,
+      gender: gender,
     });
 
-    res.status(200).json({ product: createdProduct, size: createdSize });
+    res.status(200).json({ product: createdProduct });
   } catch (err) {
     next(err);
   }
@@ -78,56 +85,54 @@ exports.getProductsById = async (req, res, next) => {
 exports.editProduct = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { productName, price, discountPrice, description, size, stock } =
-      req.body;
+    const {
+      productName,
+      price,
+      discountPrice,
+      description,
+      sizeS,
+      sizeM,
+      sizeL,
+      gender,
+    } = req.body;
 
-    const imgUrl1 = await (
-      await uploadService.upload(req.files["img1"][0].path)
-    ).secure_url;
+    const updateFields = {
+      productName: productName,
+      price: price,
+      discountPrice: discountPrice,
+      description: description,
+      sizeS: sizeS,
+      sizeM: sizeM,
+      sizeL: sizeL,
+      gender: gender,
+    };
 
-    const imgUrl2 = await (
-      await uploadService.upload(req.files["img2"][0].path)
-    ).secure_url;
+    if (req.files && req.files["img1"] && req.files["img1"][0]) {
+      const imgUrl1 = await (
+        await uploadService.upload(req.files["img1"][0].path)
+      ).secure_url;
+      updateFields.img1 = imgUrl1;
+    }
 
-    const imgUrl3 = await (
-      await uploadService.upload(req.files["img3"][0].path)
-    ).secure_url;
+    if (req.files && req.files["img2"] && req.files["img2"][0]) {
+      const imgUrl2 = await (
+        await uploadService.upload(req.files["img2"][0].path)
+      ).secure_url;
+      updateFields.img2 = imgUrl2;
+    }
 
-    const editProduct = await Product.update(
-      {
-        include: {
-          model: Size,
-        },
-      },
+    if (req.files && req.files["img3"] && req.files["img3"][0]) {
+      const imgUrl3 = await (
+        await uploadService.upload(req.files["img3"][0].path)
+      ).secure_url;
+      updateFields.img3 = imgUrl3;
+    }
 
-      {
-        name: productName,
-        price: price,
-        discountPrice: discountPrice,
-        description: description,
-        imgUrl1: imgUrl1,
-        imgUrl2: imgUrl2,
-        imgUrl3: imgUrl3,
-        size: size,
-        stock: stock,
-      },
+    const editProduct = await Product.update(updateFields, {
+      where: { id: id },
+    });
 
-      {
-        where: { id: id },
-      }
-    );
-
-    // const editSize = await Size.update(
-    //   {
-    //     size: size,
-    //     stock: stock,
-    //   },
-    //   {
-    //     where: { id: editProduct.sizeId },
-    //   }
-    // );
-
-    res.status(200);
+    res.status(200).json({ editProduct: editProduct });
   } catch (err) {
     next(err);
   }

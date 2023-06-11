@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => {
   const Product = sequelize.define(
     "Product",
     {
-      name: {
+      productName: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -24,17 +24,36 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      imgUrl1: {
+      gender: {
+        type: DataTypes.ENUM("male", "female"),
+        allowNull: false,
+      },
+      img1: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      imgUrl2: {
+      img2: {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      imgUrl3: {
+      img3: {
         type: DataTypes.STRING,
         allowNull: true,
+      },
+      sizeS: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
+      sizeM: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
+      sizeL: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
       },
     },
     {
@@ -43,7 +62,7 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Product.associate = (models) => {
-    Product.hasMany(models.Cart, {
+    Product.hasOne(models.CartItem, {
       foreignKey: {
         name: "productId",
         allowNull: false,
@@ -51,15 +70,7 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: "RESTRICT",
     });
 
-    Product.belongsTo(models.Size, {
-      foreignKey: {
-        name: "sizeId",
-        allowNull: false,
-      },
-      onDelete: "RESTRICT",
-    });
-
-    Product.hasOne(models.OrderItem, {
+    Product.hasMany(models.OrderItem, {
       foreignKey: {
         name: "productId",
         allowNull: false,

@@ -16,7 +16,7 @@ router.post(
 
 router.get(
   "/allProduct",
-  adminAuthMiddleware,
+
   productController.getAllProducts
 );
 
@@ -36,6 +36,6 @@ router.patch(
   productController.editProduct
 );
 
-router.get("/:id", adminAuthMiddleware, productController.getProductsById);
+router.get("/:id", productController.getProductsById);
 
 module.exports = router;

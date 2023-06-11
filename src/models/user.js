@@ -61,7 +61,7 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: "RESTRICT",
     });
 
-    User.hasOne(models.Cart, {
+    User.hasMany(models.CartItem, {
       foreignKey: {
         name: "userId",
         allowNull: false,

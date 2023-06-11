@@ -6,11 +6,16 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
+      size: {
+        type: DataTypes.ENUM("S", "M", "L"),
+        allowNull: false,
+      },
     },
     {
       underscored: true,
     }
   );
+
   OrderItem.associate = (models) => {
     OrderItem.belongsTo(models.Order, {
       foreignKey: {
@@ -28,5 +33,6 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: "RESTRICT",
     });
   };
+
   return OrderItem;
 };

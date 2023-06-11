@@ -16,9 +16,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
   ShippingMethod.associate = (models) => {
-    ShippingMethod.hasOne(models.Order, {
+    ShippingMethod.belongsTo(models.Order, {
       foreignKey: {
-        name: "shippingMethodId",
+        name: "orderId",
         allowNull: false,
       },
       onDelete: "RESTRICT",
