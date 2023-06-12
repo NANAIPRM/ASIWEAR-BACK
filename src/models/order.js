@@ -15,6 +15,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.FLOAT,
         allowNull: false,
       },
+      payment: {
+        type: DataTypes.STRING,
+      },
     },
     {
       underscored: true,
@@ -25,30 +28,6 @@ module.exports = (sequelize, DataTypes) => {
     Order.belongsTo(models.User, {
       foreignKey: {
         name: "userId",
-        allowNull: false,
-      },
-      onDelete: "RESTRICT",
-    });
-
-    Order.belongsTo(models.Address, {
-      foreignKey: {
-        name: "addressId",
-        allowNull: false,
-      },
-      onDelete: "RESTRICT",
-    });
-
-    Order.hasOne(models.ShippingMethod, {
-      foreignKey: {
-        name: "orderId",
-        allowNull: false,
-      },
-      onDelete: "RESTRICT",
-    });
-
-    Order.hasOne(models.Payment, {
-      foreignKey: {
-        name: "orderId",
         allowNull: false,
       },
       onDelete: "RESTRICT",
