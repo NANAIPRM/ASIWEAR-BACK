@@ -2,10 +2,6 @@ module.exports = (sequelize, DataTypes) => {
   const Order = sequelize.define(
     "Order",
     {
-      orderDate: {
-        type: DataTypes.DATE,
-        allowNull: false,
-      },
       orderStatus: {
         type: DataTypes.ENUM("PENDING", "SUCCESS"),
         allowNull: false,

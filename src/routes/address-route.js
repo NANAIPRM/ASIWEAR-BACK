@@ -5,4 +5,6 @@ const router = express.Router();
 
 router.post("/create", addressController.addAddress);
 
+router.get("/me", addressController.getAddressByUserId);
+
 module.exports = router;
