@@ -117,3 +117,28 @@ exports.getAllOrderByUserId = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.getOrderByOrderId = async (req, res, next) => {
+  try {
+    const orderId = req.params.orderId;
+
+    const order = await Order.findOne({
+      where: { id: orderId },
+      include: [
+        {
+          model: User,
+        },
+        {
+          model: OrderItem,
+          include: {
+            model: Product,
+          },
+        },
+      ],
+    });
+
+    res.json(order);
+  } catch (err) {
+    next(err);
+  }
+};

@@ -7,16 +7,6 @@ exports.addAddress = async (req, res, next) => {
       req.body;
     const userId = req.user.id;
 
-    const existingAddress = await Address.findOne({
-      where: {
-        userId,
-      },
-    });
-
-    if (existingAddress) {
-      createError("Address already exists", 400);
-    }
-
     const address = await Address.create({
       addressLine1,
       addressLine2,
@@ -37,7 +27,7 @@ exports.getAddressByUserId = async (req, res, next) => {
   try {
     const userId = req.user.id;
 
-    const address = await Address.findOne({
+    const address = await Address.findAll({
       where: {
         userId,
       },

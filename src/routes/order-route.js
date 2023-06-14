@@ -21,4 +21,6 @@ router.get(
   orderController.getAllOrderByUserId
 );
 
+router.get("/:orderId", orderController.getOrderByOrderId);
+
 module.exports = router;
