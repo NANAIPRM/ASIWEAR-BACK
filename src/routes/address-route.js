@@ -7,4 +7,5 @@ router.post("/create", addressController.addAddress);
 
 router.get("/me", addressController.getAddressByUserId);
 
+router.get("/order", addressController.getAddressByOrderId);
 module.exports = router;

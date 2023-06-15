@@ -1,11 +1,19 @@
-const { Order, OrderItem, CartItem, Product, User } = require("../models");
+const {
+  Order,
+  OrderItem,
+  CartItem,
+  Product,
+  User,
+  Address,
+} = require("../models");
 const createError = require("../utils/create-error");
 const uploadService = require("../services/upload-service");
 exports.createOrder = async (req, res, next) => {
   try {
     const userId = req.user.id;
     const paymentSlip = (await uploadService.upload(req.file.path)).secure_url;
-
+    const { addressLine1, addressLine2, city, province, postalCode, country } =
+      req.body;
     const cartItems = await CartItem.findAll({
       where: { userId: userId },
     });
@@ -21,6 +29,21 @@ exports.createOrder = async (req, res, next) => {
       }
 
       totalAmount += price * cartItem.quantity;
+
+      if (cartItem.size === "S") {
+        product.sizeS -= cartItem.quantity;
+        await product.save();
+      }
+
+      if (cartItem.size === "M") {
+        product.sizeM -= cartItem.quantity;
+        await product.save();
+      }
+
+      if (cartItem.size === "L") {
+        product.sizeL -= cartItem.quantity;
+        await product.save();
+      }
     }
 
     const order = await Order.create({
@@ -38,6 +61,17 @@ exports.createOrder = async (req, res, next) => {
         size: cartItem.size,
       });
     }
+
+    await Address.create({
+      addressLine1: addressLine1,
+      addressLine2: addressLine2,
+      city: city,
+      province: province,
+      postalCode: postalCode,
+      country: country,
+      userId: userId,
+      orderId: order.id,
+    });
 
     await CartItem.destroy({
       where: {
@@ -102,6 +136,7 @@ exports.getAllOrderByUserId = async (req, res, next) => {
       include: [
         {
           model: User,
+          model: Address,
         },
         {
           model: OrderItem,

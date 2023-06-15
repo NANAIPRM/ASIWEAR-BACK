@@ -43,6 +43,14 @@ module.exports = (sequelize, DataTypes) => {
       },
       onDelete: "RESTRICT",
     });
+
+    Address.belongsTo(models.Order, {
+      foreignKey: {
+        name: "orderId",
+        allowNull: false,
+      },
+      onDelete: "RESTRICT",
+    });
   };
 
   return Address;
