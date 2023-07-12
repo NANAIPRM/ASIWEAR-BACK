@@ -33,11 +33,11 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
-app.use("/auth", authRoute);
-app.use("/product", productRoute);
-app.use("/cart", authenticate, cartRoute);
-app.use("/address", authenticate, addressRoute);
-app.use("/order", authenticate, orderRoute);
+app.use("/api/auth", authRoute);
+app.use("/api/product", productRoute);
+app.use("/api/cart", authenticate, cartRoute);
+app.use("/api/address", authenticate, addressRoute);
+app.use("/api/order", authenticate, orderRoute);
 
 app.use(notFoundMiddleware);
 app.use(errorMiddleware);
